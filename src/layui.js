@@ -784,6 +784,7 @@
   
   //exports layui
   win.layui = new Layui();
+  win.tool = win.layui;
   
 }(window); //gulp build: layui-footer
 

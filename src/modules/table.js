@@ -165,7 +165,7 @@ layui.define(['lay', 'laytpl', 'laypage', 'form', 'util'], function(exports){
             return '';
           }()
           ,'{{# var isSort = !(item2.colGroup) && item2.sort; }}'
-          ,'<th data-field="{{= item2.field||i2 }}" data-key="{{=d.index}}-{{=i1}}-{{=i2}}" {{# if( item2.parentKey){ }}data-parentkey="{{= item2.parentKey }}"{{# } }} {{# if(item2.minWidth){ }}data-minwidth="{{=item2.minWidth}}"{{# } }} {{# if(item2.maxWidth){ }}data-maxwidth="{{=item2.maxWidth}}"{{# } }} '+ rowCols +' {{# if(item2.unresize || item2.colGroup){ }}data-unresize="true"{{# } }} class="{{# if(item2.hide){ }}layui-hide{{# } }}{{# if(isSort){ }} layui-unselect{{# } }}{{# if(!item2.field){ }} layui-table-col-special{{# } }}"{{# if(item2.title){ }} title="{{ layui.$(\'<div>\' + item2.title + \'</div>\').text() }}"{{# } }}>'
+          ,'<th data-field="{{= item2.field||i2 }}" data-id="{{item2.id}}" data-key="{{=d.index}}-{{=i1}}-{{=i2}}" {{# if( item2.parentKey){ }}data-parentkey="{{= item2.parentKey }}"{{# } }} {{# if(item2.minWidth){ }}data-minwidth="{{=item2.minWidth}}"{{# } }} {{# if(item2.maxWidth){ }}data-maxwidth="{{=item2.maxWidth}}"{{# } }} '+ rowCols +' {{# if(item2.unresize || item2.colGroup){ }}data-unresize="true"{{# } }} class="{{# if(item2.hide){ }}layui-hide{{# } }}{{# if(isSort){ }} layui-unselect{{# } }}{{# if(!item2.field){ }} layui-table-col-special{{# } }}"{{# if(item2.title){ }} title="{{ layui.$(\'<div>\' + item2.title + \'</div>\').text() }}"{{# } }}>'
             ,'<div class="layui-table-cell laytable-cell-'
               ,'{{# if(item2.colGroup){ }}'
                 ,'group'
@@ -310,6 +310,7 @@ layui.define(['lay', 'laytpl', 'laypage', 'form', 'util'], function(exports){
       none: '无数据'
     }
     ,cols: []
+    ,error: function (m) {}
   };
 
   // 表格渲染
@@ -1794,6 +1795,7 @@ layui.define(['lay', 'laytpl', 'laypage', 'form', 'util'], function(exports){
       layui.event.call(this, MOD_NAME, 'toolbar('+ filter +')', $.extend({
         event: events
         ,config: options
+        ,list: openPanel
       },{}));
     });
 

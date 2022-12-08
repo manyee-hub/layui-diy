@@ -350,7 +350,7 @@ Class.pt.vessel = function(conType, callback){
         var button = '';
         typeof config.btn === 'string' && (config.btn = [config.btn]);
         for(var i = 0, len = config.btn.length; i < len; i++){
-          button += '<a class="'+ doms[6] +''+ i +'">'+ config.btn[i] +'</a>'
+          button += '<a href="javascript:;" class="'+ doms[6] +''+ i +'">'+ config.btn[i] +'</a>'
         }
         return '<div class="'+ doms[6] +' layui-layer-btn-'+ (config.btnAlign||'') +'">'+ button +'</div>'
       }() : '')
@@ -477,7 +477,11 @@ Class.pt.creat = function(){
       $(this).removeClass(animClass);
     });
   };
-  
+  let tempTimer = setTimeout(function () {
+    let btns = that.layero.find(".layui-layer-btn").children();
+    btns && btns.length && btns[0].focus()
+    clearTimeout(tempTimer);
+  }, 0)
   //记录关闭动画
   if(config.isOutAnim){
     that.layero.data('isOutAnim', true);
@@ -1279,9 +1283,9 @@ layer.tab = function(options){
     content: '<ul class="layui-layer-tabmain">'+ function(){
       var len = tab.length, ii = 1, str = '';
       if(len > 0){
-        str = '<li class="layui-layer-tabli '+ THIS +'">'+ (tab[0].content || 'no content') +'</li>';
+        str = '<li class="layui-layer-tabli '+ THIS +'">'+ (tab[0].content instanceof $ ? t[0].content[0].outerHTML : t[0].content  || 'no content') +'</li>';
         for(; ii < len; ii++){
-          str += '<li class="layui-layer-tabli">'+ (tab[ii].content || 'no  content') +'</li>';
+          str += '<li class="layui-layer-tabli">'+ (tab[ii].content instanceof $ ? tab[ii].content[0].outerHTML : tab[ii].content   || 'no  content') +'</li>';
         }
       }
       return str;

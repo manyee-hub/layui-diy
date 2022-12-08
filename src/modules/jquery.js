@@ -9877,11 +9877,11 @@ jQuery.extend( {
 } );
 
 jQuery.each( [ "get", "post" ], function( i, method ) {
-	jQuery[ method ] = function( url, data, callback, type ) {
+	jQuery[ method ] = function( url, data, callback, type, isLoading ) {
 
 		// shift arguments if data argument was omitted
 		if ( jQuery.isFunction( data ) ) {
-			type = type || callback;
+			type = type || callback || 'json';
 			callback = data;
 			data = undefined;
 		}
@@ -9892,7 +9892,17 @@ jQuery.each( [ "get", "post" ], function( i, method ) {
 			type: method,
 			dataType: type,
 			data: data,
-			success: callback
+			beforeSend: function (isLoading) {
+				isLoading !== false && pageWaiting && pageWaiting(true);
+			},
+			success: function (res) {
+				pageWaiting && pageWaiting(false);
+				callback && callback(res);
+			},
+			error: function (res) {
+				pageWaiting && pageWaiting(false);
+				layui.layer.msg(requestError || '请求错误！')
+			}
 		}, jQuery.isPlainObject( url ) && url ) );
 	};
 } );

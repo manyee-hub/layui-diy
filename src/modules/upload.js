@@ -196,7 +196,9 @@ layui.define(['lay','layer'], function(exports){
         //追加额外的参数
         layui.each(options.data, function(key, value){
           value = typeof value === 'function' ? value() : value;
-          formData.append(key, value);
+          "object" == typeof t ? layui.each(t, function (key, value) {
+            formData.append(key, value)
+          }) : formData.append(key, value);
         });
         
         //最后添加 file 到表单域
@@ -233,7 +235,7 @@ layui.define(['lay','layer'], function(exports){
             xhr.upload.addEventListener("progress", function (obj) {
               if(obj.lengthComputable){
                 var percent = Math.floor((obj.loaded/obj.total)* 100); //百分比
-                options.progress(percent, (options.item ? options.item[0] : options.elem[0]) , obj, index);
+                options.progress(percent, (options.item ? options.item[0] : options.elem[0]) , obj, index);//options.item ? options.item[0] : null
               }
             });
             return xhr;

@@ -1571,6 +1571,7 @@
     //绑定的元素是否为 input
     if(that.isInput(elem)){
       lay(elem).val(value);
+      elem.dispatchEvent(new Event('input'))
     } else {
       //如果 range 传入了开始和结束的 input 对象，则分别对其赋值
       var rangeElem = that.rangeElem;
@@ -1579,7 +1580,9 @@
           value = value.split(' '+ that.rangeStr +' ');
         }
         rangeElem[0].val(value[0] || '');
+        rangeElem[0][0].dispatchEvent(new Event('input'))
         rangeElem[1].val(value[1] || '');
+        rangeElem[1][0].dispatchEvent(new Event('input'))
       } else {
         if(lay(elem).find('*').length === 0){
           lay(elem).html(value);

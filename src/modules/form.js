@@ -505,13 +505,13 @@ layui.define(['layer', 'util'], function(exports){
 
             othis.siblings().removeClass(THIS);
             select.val(value).removeClass('layui-form-danger');
-
+            select[0].dispatchEvent(new Event('change')); 
+            
             layui.event.call(this, MOD_NAME, 'select('+ filter +')', {
               elem: select[0]
               ,value: value
               ,othis: reElem
             });
-
             hideDown(true);
             return false;
           });
@@ -532,7 +532,7 @@ layui.define(['layer', 'util'], function(exports){
           ,optionsFirst = select.options[0];
           
           if(typeof othis.attr('lay-ignore') === 'string') return othis.show();
-          
+          let select_class = othis.attr("select-class"),option_class = othis.attr("option-class");
           var isSearch = typeof othis.attr('lay-search') === 'string'
           ,placeholder = optionsFirst ? (
             optionsFirst.value ? TIPS : (optionsFirst.innerHTML || TIPS)
@@ -540,16 +540,16 @@ layui.define(['layer', 'util'], function(exports){
 
           // 替代元素
           var reElem = $(['<div class="'+ (isSearch ? '' : 'layui-unselect ') + CLASS 
-          ,(disabled ? ' layui-select-disabled' : '') +'">'
+          ,(disabled ? ' layui-select-disabled' : '') + ' ' +(select_class || '') +' ">'
             ,'<div class="'+ TITLE +'">'
               ,('<input type="text" placeholder="'+ util.escape($.trim(placeholder)) +'" '
                 +('value="'+ util.escape($.trim(value ? selected.html() : '')) +'"') // 默认值
                 +((!disabled && isSearch) ? '' : ' readonly') // 是否开启搜索
-                +' class="layui-input'
+                +' class="'+(select_class||'')+' layui-input'
                 +(isSearch ? '' : ' layui-unselect') 
               + (disabled ? (' ' + DISABLED) : '') +'">') // 禁用状态
             ,'<i class="layui-edge"></i></div>'
-            ,'<dl class="layui-anim layui-anim-upbit'+ (othis.find('optgroup')[0] ? ' layui-select-group' : '') +'">'
+            ,'<dl class="layui-anim layui-anim-upbit'+ (othis.find('optgroup')[0] ? ' layui-select-group' : '')+' '+(option_class||'') +'">'
             ,function(options){
               var arr = [];
               layui.each(options, function(index, item){
@@ -599,6 +599,7 @@ layui.define(['layer', 'util'], function(exports){
               check[0].checked = true
               ,reElem.addClass(RE_CLASS[1]).find('em').text(text[0])
             );
+            check[0].dispatchEvent(new Event('change'));
             
             layui.event.call(check[0], MOD_NAME, RE_CLASS[2]+'('+ filter +')', {
               elem: check[0]
@@ -613,12 +614,13 @@ layui.define(['layer', 'util'], function(exports){
           ,text = (othis.attr('lay-text') || '').split('|'), disabled = this.disabled;
           if(skin === 'switch') skin = '_'+skin;
           var RE_CLASS = CLASS[skin] || CLASS.checkbox;
+          let switch_class = "_switch" === skin ? othis.attr("class") : "";
           
           if(typeof othis.attr('lay-ignore') === 'string') return othis.show();
           
           // 替代元素
           var hasRender = othis.next('.' + RE_CLASS[0])
-          ,reElem = $(['<div class="layui-unselect '+ RE_CLASS[0]
+          ,reElem = $(['<div class="layui-unselect '+ switch_class + ' ' +  RE_CLASS[0]
             ,(check.checked ? (' '+ RE_CLASS[1]) : '') // 选中状态
             ,(disabled ? ' layui-checkbox-disabled '+ DISABLED : '') // 禁用状态
             ,'"'
@@ -671,7 +673,7 @@ layui.define(['layer', 'util'], function(exports){
             radio[0].checked = true;
             reElem.addClass(CLASS+'ed');
             reElem.find('.layui-icon').addClass(ANIM).html(ICON[0]);
-            
+            radio[0].dispatchEvent(new Event('change'));
             layui.event.call(radio[0], MOD_NAME, 'radio('+ filter +')', {
               elem: radio[0]
               ,value: radio[0].value
